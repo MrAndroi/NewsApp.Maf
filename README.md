@@ -2,6 +2,13 @@
 
 Android application that fetches latest news from different sources
 
+
+
+
+
+[![Demo](https://s4.gifyu.com/images/Screen_Recording_2022-09-17_at_9_40_30_AM_AdobeExpress.gif "Demo")]
+
+
 #### Features
 1. Modular
 2. Uses Latest in Android
