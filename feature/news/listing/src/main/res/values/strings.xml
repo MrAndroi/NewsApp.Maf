@@ -1,0 +1,17 @@
+<resources>
+    <string name="author_name">Article Author: %s</string>
+    <string name="publish_date">Publish Date: %s</string>
+
+    <array name="categories">
+        <item>sports</item>
+        <item>business</item>
+        <item>health</item>
+    </array>
+
+    <array name="countries">
+        <item>us</item>
+        <item>ae</item>
+        <item>jo</item>
+    </array>
+
+</resources>

@@ -1,0 +1,40 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id "kotlin-kapt"
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.maf.newsapp"
+        minSdk 21
+        targetSdk 33
+    }
+
+    buildTypes {
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+    }
+
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+    }
+
+}
+
+dependencies {
+    implementation project(':core')
+    implementation project(':feature:main')
+    implementation project(':feature:news:listing')
+}
+
+apply from: rootDir.path + "/sub_project.gradle"
+apply from: rootDir.path + "/dependencies.gradle"

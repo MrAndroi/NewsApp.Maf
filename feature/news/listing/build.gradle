@@ -1,0 +1,18 @@
+apply plugin: "com.android.library"
+apply from: rootDir.path + "/sub_project.gradle"
+apply from: rootDir.path + "/dependencies.gradle"
+
+dependencies {
+    implementation project(':core')
+
+    testImplementation "junit:junit:4.13.2"
+    testImplementation "com.google.truth:truth:1.1.3"
+}
+
+android {
+
+    defaultConfig {
+        buildConfigField("String", "NEWS_API_KEY", getProperty("news.api.key"))
+        buildConfigField("String", "NEWS_DATA_KEY", getProperty("news.data.key"))
+    }
+}
