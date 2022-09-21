@@ -2,13 +2,11 @@ package com.maf.listing.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.maf.listing.domain.models.FilterData
 import com.maf.listing.domain.models.NewsListingModel
 import com.maf.listing.domain.usecase.GetNewsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,18 +24,20 @@ class NewsListingViewModel @Inject constructor(
     private val _newsList = MutableStateFlow<List<NewsListingModel>?>(null)
     val newsList: StateFlow<List<NewsListingModel>?> = _newsList
 
-    private var selectedCategory = "sports"
-    private var selectedCountry = "us"
+    private var selectedCategory = MutableStateFlow(FilterData())
 
     init {
-        getNews()
+        selectedCategory.map {
+            getNews(it)
+        }.stateIn(viewModelScope, SharingStarted.Eagerly, FilterData())
+
     }
 
-    private fun getNews() {
+    private fun getNews(filterData: FilterData) {
         viewModelScope.launch {
             _progressFlow.emit(true)
             try {
-                _newsList.emit(getNewsUseCase(selectedCountry, selectedCategory))
+                _newsList.emit(getNewsUseCase(filterData.country, filterData.category))
             } catch (e: Exception) {
                 _errorState.emit(e)
             }
@@ -46,13 +46,15 @@ class NewsListingViewModel @Inject constructor(
     }
 
     fun updateCategory(newCategory: String) {
-        selectedCategory = newCategory
-        getNews()
+        selectedCategory.update {
+            it.copy(category = newCategory)
+        }
     }
 
     fun updateCountry(newCountry: String) {
-        selectedCountry = newCountry
-        getNews()
+        selectedCategory.update {
+            it.copy(country = newCountry)
+        }
     }
 
 }
